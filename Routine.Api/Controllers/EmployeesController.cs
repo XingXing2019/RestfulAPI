@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Routine.Api.Entities;
 using Routine.Api.Models;
 using Routine.Api.Services;
 
@@ -23,16 +24,16 @@ namespace Routine.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployeesForCompany(Guid companyId)
+        public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployeesForCompany(Guid companyId, [FromQuery(Name = "gender")] string genderDisplay, string q)
         {
             if (!await _companyRepository.CompanyExistsAsync(companyId))
                 return NotFound();
-            var employees = await _companyRepository.GetEmployeesAsync(companyId);
+            var employees = await _companyRepository.GetEmployeesAsync(companyId, genderDisplay, q);
             var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
             return Ok(employeesDto);
         }
 
-        [HttpGet("{employeeId}")]
+        [HttpGet("{employeeId}", Name = nameof(GetEmployeeForCompany))]
         public async Task<ActionResult<EmployeeDto>> GetEmployeeForCompany(Guid companyId, Guid employeeId)
         {
             if (!await _companyRepository.CompanyExistsAsync(companyId))
@@ -42,6 +43,26 @@ namespace Routine.Api.Controllers
                 return NotFound();
             var employeeDto = _mapper.Map<EmployeeDto>(employee);
             return Ok(employeeDto);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<EmployeeDto>> CreateEmployeeForCompany(Guid companyId, EmployeeAddDto employee)
+        {
+            if (! await _companyRepository.CompanyExistsAsync(companyId))
+                return NotFound();
+
+            var entity = _mapper.Map<Employee>(employee);
+            _companyRepository.AddEmployee(companyId, entity);
+
+            await _companyRepository.SaveAsync();
+
+            var returnDto = _mapper.Map<EmployeeDto>(entity);
+
+            return CreatedAtRoute(nameof(GetEmployeeForCompany), new
+            {
+                companyId = companyId,
+                employeeId = returnDto.Id
+            }, returnDto);
         }
     }
 }
