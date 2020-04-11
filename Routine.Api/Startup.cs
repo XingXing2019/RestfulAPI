@@ -58,7 +58,7 @@ namespace Routine.Api
                 });
             }
 
-                app.UseRouting();
+            app.UseRouting();
 
             app.UseAuthorization();
 

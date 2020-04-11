@@ -55,7 +55,7 @@ namespace Routine.Api.Controllers
         }
 
         [HttpOptions]
-        public Task<IActionResult> GetCompaniesOptions()
+        public IActionResult GetCompaniesOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, OPTIONS");
             return Ok();
