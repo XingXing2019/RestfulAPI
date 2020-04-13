@@ -122,7 +122,7 @@ namespace Routine.Api.Services
             if(employeeId == Guid.Empty) throw new ArgumentNullException(nameof(employeeId));
             return await _context.Employees
                 .Where(x => x.CompanyId.Equals(companyId))
-                .FirstOrDefaultAsync(x => employeeId.Equals(employeeId));
+                .FirstOrDefaultAsync(x => x.Id.Equals(employeeId));
         }
 
         public void AddEmployee(Guid companyId, Employee employee)

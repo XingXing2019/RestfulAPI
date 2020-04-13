@@ -11,9 +11,9 @@ namespace Routine.Api.ValidationAttributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var addDto = (EmployeeAddDto) validationContext.ObjectInstance;
+            var addDto = (EmployeeAddEditDto) validationContext.ObjectInstance;
             if (addDto.EmployeeNo == addDto.FirstName)
-                return new ValidationResult(ErrorMessage, new []{nameof(EmployeeAddDto)});
+                return new ValidationResult(ErrorMessage, new []{nameof(EmployeeAddEditDto) });
             return ValidationResult.Success;
         }
     }
