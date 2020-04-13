@@ -32,6 +32,7 @@ namespace Routine.Api
         {
             services.AddControllers(setup => { setup.ReturnHttpNotAcceptable = true; }).AddXmlDataContractSerializerFormatters();
 
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();

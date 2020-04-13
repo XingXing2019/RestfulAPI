@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Routine.Api.Entities;
 using Routine.Api.Models;
@@ -48,7 +49,7 @@ namespace Routine.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<EmployeeDto>> CreateEmployeeForCompany(Guid companyId, EmployeeAddDto employee)
         {
-            if (! await _companyRepository.CompanyExistsAsync(companyId))
+            if (!await _companyRepository.CompanyExistsAsync(companyId))
                 return NotFound();
 
             var entity = _mapper.Map<Employee>(employee);
@@ -90,7 +91,7 @@ namespace Routine.Api.Controllers
                     employeeId = returnDto.Id
                 }, returnDto);
             }
-               
+
 
             _mapper.Map(employee, employeeEntity);
 
@@ -100,6 +101,19 @@ namespace Routine.Api.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{employeeId}")]
+        public async Task<IActionResult> DeleteEmployeeForCompany(Guid companyId, Guid employeeId)
+        {
+            if (!await _companyRepository.CompanyExistsAsync(companyId))
+                return NotFound();
 
+            var employeeEntity = await _companyRepository.GetEmployeeAsync(companyId, employeeId);
+            if (employeeEntity == null)
+                return NotFound();
+
+            _companyRepository.DeleteEmployee(employeeEntity);
+            await _companyRepository.SaveAsync();
+            return NoContent();
+        }
     }
 }
