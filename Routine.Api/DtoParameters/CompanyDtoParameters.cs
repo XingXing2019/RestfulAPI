@@ -14,6 +14,8 @@ namespace Routine.Api.DtoParameters
         {
             get => _pageSize;
             set => _pageSize = Math.Min(MaxPageSize, value);
-        }      
+        }
+
+        public string OrderBy { get; set; } = "CompanyName";
     }
 }

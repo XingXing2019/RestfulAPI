@@ -21,6 +21,10 @@ namespace Routine.Api.Data
         {
             modelBuilder.Entity<Company>().Property(x => x.Name).IsRequired().HasMaxLength(100);
             modelBuilder.Entity<Company>().Property(x => x.Introduction).HasMaxLength(500);
+            modelBuilder.Entity<Company>().Property(x => x.Country).HasMaxLength(50);
+            modelBuilder.Entity<Company>().Property(x => x.Product).HasMaxLength(50);
+            modelBuilder.Entity<Company>().Property(x => x.Industry).HasMaxLength(50);
+            modelBuilder.Entity<Company>().Property(x => x.Introduction).HasMaxLength(50);
 
             modelBuilder.Entity<Employee>().Property(x => x.EmployeeNo).IsRequired().HasMaxLength(10);
             modelBuilder.Entity<Employee>().Property(x => x.FirstName).IsRequired().HasMaxLength(50);
@@ -38,18 +42,27 @@ namespace Routine.Api.Data
                     Id = Guid.Parse("bbdee09c-089b-4d30-bece-44df5923716c"),
                     Name = "Microsoft",
                     Introduction = "Great Company",
+                    Country = "USA",
+                    Industry = "Software",
+                    Product = "Software"
                 },
                 new Company
                 {
                     Id = Guid.Parse("6fb600c1-9011-4fd7-9234-881379716440"),
                     Name = "Google",
-                    Introduction = "Don't be evil"
+                    Introduction = "Don't be evil",
+                    Country = "USA",
+                    Industry = "Software",
+                    Product = "Software"
                 },
                 new Company
                 {
                     Id = Guid.Parse("5efc910b-2f45-43df-afae-620d40542853"),
                     Name = "Alipapa",
-                    Introduction = "Fubao Company"
+                    Introduction = "Fubao Company",
+                    Country = "China",
+                    Industry = "Internet",
+                    Product = "Software"
                 }
             );
 
